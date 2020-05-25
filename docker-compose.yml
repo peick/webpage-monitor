@@ -1,0 +1,72 @@
+version: "2.3"
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+
+  kafka:
+    image: wurstmeister/kafka:2.12-2.2.0
+    ports:
+    - "9091:9091"
+    depends_on:
+    - zookeeper
+    environment:
+      KAFKA_CREATE_TOPICS: "webpage-checks:2:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: LOCALHOST://:9091,PLAINTEXT://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LOCALHOST:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: LOCALHOST://localhost:9091,PLAINTEXT://kafka:9092
+
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./tests/docker-compose/initdb.d:/docker-entrypoint-initdb.d:ro
+    ports:
+    - "5432:5432"
+
+  collector:
+    build:
+      context: .
+    depends_on:
+    - kafka
+    command:
+    - wpmon-collector
+    - "--kafka-host=kafka"
+    - "--kafka-port=9092"
+    - "--kafka-topic=webpage-checks"
+    - "--url=http://google.com"
+    restart: on-failure
+
+  pgwriter:
+    build:
+      context: .
+    depends_on:
+    - kafka
+    - postgres
+    command:
+    - wpmon-pgwriter
+    - "--kafka-host=kafka"
+    - "--kafka-topic=webpage-checks"
+    - "--db-host=postgres"
+    - "--db-user=postgres"
+    - "--db-password=postgres"
+    - "--db-name=checks"
+    - "--db-table=webpage_checks_0"
+    - "--db-table=webpage_checks_1"
+    restart: on-failure
+
+  test:
+    build:
+      context: .
+    depends_on:
+    - kafka
+    - postgres
+    volumes:
+    - .:/src
+    working_dir: /src
+    command:
+    - bash
+    - "-c"
+    - 'pip install tox && tox --workdir=/tmp/tox'

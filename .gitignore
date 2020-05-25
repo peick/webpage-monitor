@@ -1,0 +1,20 @@
+# pyenv
+.python-version
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Distribution / packaging
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.coverage.*
+.cache
+*,cover
