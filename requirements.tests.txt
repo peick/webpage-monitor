@@ -4,25 +4,38 @@
 #
 #    pip-compile --no-index --output-file=requirements.tests.txt requirements.tests.in
 #
-atomicwrites==1.4.0       # via pytest
-attrs==19.3.0             # via pytest
-configparser==4.0.2       # via importlib-metadata
-contextlib2==0.6.0.post1  # via importlib-metadata, zipp
+atomicwrites==1.4.0
+    # via pytest
+attrs==19.3.0
+    # via pytest
 flexmock==0.10.4
+    # via -r requirements.tests.in
 freezegun==0.3.15
-funcsigs==1.0.2           # via pytest
-importlib-metadata==1.6.0  # via pluggy, pytest
-more-itertools==5.0.0     # via pytest
-packaging==20.4           # via pytest
-pathlib2==2.3.5           # via importlib-metadata, pytest
-pluggy==0.13.1            # via pytest
-py==1.8.1                 # via pytest
-pyparsing==2.4.7          # via packaging
+    # via -r requirements.tests.in
+more-itertools==5.0.0
+    # via pytest
+packaging==20.4
+    # via pytest
+pluggy==0.13.1
+    # via pytest
+py==1.10.0
+    # via pytest
+pyparsing==2.4.7
+    # via packaging
 pytest-localserver==0.5.0
+    # via -r requirements.tests.in
 pytest==4.6.10
-python-dateutil==2.8.1    # via freezegun
-scandir==1.10.0           # via pathlib2
-six==1.15.0               # via freezegun, more-itertools, packaging, pathlib2, pytest, python-dateutil
-wcwidth==0.1.9            # via pytest
-werkzeug==1.0.1           # via pytest-localserver
-zipp==1.2.0               # via importlib-metadata
+    # via -r requirements.tests.in
+python-dateutil==2.8.1
+    # via freezegun
+six==1.15.0
+    # via
+    #   freezegun
+    #   more-itertools
+    #   packaging
+    #   pytest
+    #   python-dateutil
+wcwidth==0.1.9
+    # via pytest
+werkzeug==1.0.1
+    # via pytest-localserver
