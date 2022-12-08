@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-index
 #
-certifi==2020.4.5.1       # via requests
+certifi==2022.12.7       # via requests
 cffi==1.14.0              # via cryptography
 chardet==3.0.4            # via requests
 cryptography==2.9.2       # via pyopenssl, requests
